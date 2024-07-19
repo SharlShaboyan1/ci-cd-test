@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://SharlShaboyan1.github.io/ci-cd-test",
+  "homepage": "https://sharlshaboyan1.github.io/ci-cd-test/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
