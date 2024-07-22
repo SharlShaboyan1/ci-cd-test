@@ -1,14 +1,29 @@
-FROM ubuntu:20.04
+# Use an official Node.js runtime as a parent image
+FROM node:20.14.0 as build
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y curl sudo
-
-RUN curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-RUN apt-get install -y nodejs
-RUN npm i -g serve
-
+# Set the working directory
 WORKDIR /app
-COPY dist /app/
-COPY .env /app/
-#CMD ["/bin/bash", "-c", "/app/env.sh && serve -s . -l $PORT --ssl-cert $CERT_FILE_PATH --ssl-key $KEY_FILE_PATH"]
-CMD ["/bin/bash", "-c", "serve -s . -l $PORT"]
-#CMD 'if [ "$REQUIRE_HTTPS" = true ]; then ["/bin/bash", "-c", "/app/env.sh && serve -s . -l $PORT --ssl-cert $CERT_FILE_PATH --ssl-key $KEY_FILE_PATH"]; else ["/bin/bash", "-c", "/app/env.sh && serve -s . -l $PORT"]; 
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install project dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the project
+RUN npm run build
+
+# Use an official Nginx image to serve the built application
+FROM nginx:alpine
+
+# Copy the build output to the Nginx HTML directory
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]
