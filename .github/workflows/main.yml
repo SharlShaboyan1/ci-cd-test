@@ -1,4 +1,4 @@
-name: CI/CD for React Project
+name: CI/CD for React Project with Vite
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Build the project
+      # Step 4: Build the project using Vite
       - name: Build project
         run: npm run build
 
@@ -34,5 +34,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
           publish_dir: ./dist
