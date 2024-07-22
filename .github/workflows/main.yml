@@ -3,7 +3,7 @@ name: CI/CD for React Project
 on:
   push:
     branches:
-      - main
+      - gh-pahes
 
 jobs:
   build:
