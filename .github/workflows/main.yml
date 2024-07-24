@@ -35,15 +35,17 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/my-app:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/my-app:latest
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
-        with:
-          version: 'latest'
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+      - name: Create kube directory
+        run: mkdir -p $HOME/.kube
 
       - name: Configure kubeconfig
-        run: |
-          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+        run: echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
 
       - name: Update Kubernetes deployment
-        run: |
-          kubectl --kubeconfig=$HOME/.kube/config set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
+        run: kubectl --kubeconfig=$HOME/.kube/config set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
