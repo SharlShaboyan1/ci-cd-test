@@ -40,8 +40,10 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Update Kubernetes deployment
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      - name: Configure kubeconfig
         run: |
-          kubectl set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Update Kubernetes deployment
+        run: |
+          kubectl --kubeconfig=$HOME/.kube/config set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
