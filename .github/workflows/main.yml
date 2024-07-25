@@ -52,7 +52,7 @@ jobs:
           apiVersion: v1
           clusters:
           - cluster:
-              server: https://127.0.0.1:41001
+              server: http://127.0.0.1:41001
             name: my-cluster
           contexts:
           - context:
