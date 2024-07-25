@@ -57,4 +57,4 @@ jobs:
         run: cat $HOME/.kube/config
 
       - name: Update Kubernetes deployment
-        run: kubectl --kubeconfig=$HOME/.kube/config set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
+        run: minikube start kubectl --kubeconfig=$HOME/.kube/config set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
