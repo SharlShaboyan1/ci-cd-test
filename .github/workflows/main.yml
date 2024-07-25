@@ -45,6 +45,8 @@ jobs:
         run: mkdir -p $HOME/.kube
 
       - name: Configure kubeconfig
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         run: |
           cat <<EOF > $HOME/.kube/config
           apiVersion: v1
@@ -63,7 +65,7 @@ jobs:
           users:
           - name: github-actions
             user:
-              token: ${{ secrets.KUBE_CONFIG }}
+              token: ${KUBE_CONFIG}
           EOF
 
       - name: Update Kubernetes deployment
