@@ -45,8 +45,16 @@ jobs:
         run: mkdir -p $HOME/.kube
 
       - name: Decode and configure kubeconfig
-        run: | 
-          echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 --decode > $HOME/.kube/config
+        env:
+          KUBECONFIG_BASE64: ${{ secrets.KUBECONFIG_BASE64 }}
+        run: |
+          echo "${KUBECONFIG_BASE64}" | base64 --decode > $HOME/.kube/config
+
+      - name: List kube directory contents
+        run: ls -la $HOME/.kube
+
+      - name: Print kubeconfig file contents
+        run: cat $HOME/.kube/config
 
       - name: Update Kubernetes deployment
         run: kubectl --kubeconfig=$HOME/.kube/config set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
