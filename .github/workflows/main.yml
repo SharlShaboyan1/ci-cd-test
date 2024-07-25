@@ -45,7 +45,7 @@ jobs:
         run: mkdir -p $HOME/.kube
 
       - name: Decode and configure kubeconfig
-        run: |
+        run: | 
           echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 --decode > $HOME/.kube/config
 
       - name: Update Kubernetes deployment
