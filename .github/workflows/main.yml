@@ -44,29 +44,9 @@ jobs:
       - name: Create kube directory
         run: mkdir -p $HOME/.kube
 
-      - name: Configure kubeconfig
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      - name: Decode and configure kubeconfig
         run: |
-          cat <<EOF > $HOME/.kube/config
-          apiVersion: v1
-          clusters:
-          - cluster:
-              server: https://127.0.0.1:41001
-            name: my-cluster
-          contexts:
-          - context:
-              cluster: my-cluster
-              user: github-actions
-            name: my-context
-          current-context: my-context
-          kind: Config
-          preferences: {}
-          users:
-          - name: github-actions
-            user:
-              token: ${KUBE_CONFIG}
-          EOF
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
 
       - name: Update Kubernetes deployment
         run: kubectl --kubeconfig=$HOME/.kube/config set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
