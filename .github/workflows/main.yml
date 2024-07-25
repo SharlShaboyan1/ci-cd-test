@@ -45,6 +45,9 @@ jobs:
         run: mkdir -p $HOME/.kube
 
       - name: Decode and configure kubeconfig
+        with: 
+          k8s-url: https://127.0.0.1:41001
+          k8s-secret: ${{ secrets.KUBE_CONFIG }}
         run: |
           echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
 
