@@ -44,12 +44,27 @@ jobs:
       - name: Create kube directory
         run: mkdir -p $HOME/.kube
 
-      - name: Decode and configure kubeconfig
-        with: 
-          k8s-url: https://127.0.0.1:41001
-          k8s-secret: ${{ secrets.KUBE_CONFIG }}
+      - name: Configure kubeconfig
         run: |
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
+          cat <<EOF > $HOME/.kube/config
+          apiVersion: v1
+          clusters:
+          - cluster:
+              server: https://127.0.0.1:41001
+            name: my-cluster
+          contexts:
+          - context:
+              cluster: my-cluster
+              user: github-actions
+            name: my-context
+          current-context: my-context
+          kind: Config
+          preferences: {}
+          users:
+          - name: github-actions
+            user:
+              token: ${{ secrets.KUBE_CONFIG }}
+          EOF
 
       - name: Update Kubernetes deployment
         run: kubectl --kubeconfig=$HOME/.kube/config set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
