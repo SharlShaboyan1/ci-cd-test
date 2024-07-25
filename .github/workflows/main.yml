@@ -46,7 +46,7 @@ jobs:
 
       - name: Configure kubeconfig
         env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
         run: |
           cat <<EOF > $HOME/.kube/config
           apiVersion: v1
