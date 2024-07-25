@@ -46,7 +46,7 @@ jobs:
 
       - name: Decode and configure kubeconfig
         run: |
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+          echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 --decode > $HOME/.kube/config
 
       - name: Update Kubernetes deployment
         run: kubectl --kubeconfig=$HOME/.kube/config set image deployment/ci-cd-test ci-cd-test=${{ secrets.DOCKER_USERNAME }}/my-app:latest
