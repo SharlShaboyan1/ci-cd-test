@@ -36,6 +36,9 @@ jobs:
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/my-app:latest
 
+    - name: Create kube directory
+      run: mkdir -p $HOME/.kube
+
     - name: Set up kubectl
       run: |
         echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 --decode > $HOME/.kube/config
