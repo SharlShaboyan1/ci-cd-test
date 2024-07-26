@@ -45,7 +45,7 @@ jobs:
         kubectl version --client
 
     - name: List files in the repository
-      run: ls -R /github/workspace
+      run: ls -R .
 
     - name: Apply Kubernetes Manifests
       run: |
