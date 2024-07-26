@@ -37,17 +37,17 @@ jobs:
       run: docker push ${{ secrets.DOCKER_USERNAME }}/my-app:latest
 
     - name: Install kubectl
-        run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          sudo mv kubectl /usr/local/bin/
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
 
     - name: Create kube directory
-        run: mkdir -p $HOME/.kube
+      run: mkdir -p $HOME/.kube
 
     - name: Decode and configure kubeconfig
-        run: |
-          echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 --decode > $HOME/.kube/config
+      run: |
+        echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 --decode > $HOME/.kube/config
 
     - name: Apply Kubernetes Manifests
       run: |
@@ -57,4 +57,4 @@ jobs:
     - name: Deploy to K3s
       run: |
         kubectl set image deployment/my-react-app my-react-app=${{ secrets.DOCKER_USERNAME }}/my-app:latest
-        kubectl rollout status deployment/my-app
+        kubectl rollout status deployment/my-react-app
