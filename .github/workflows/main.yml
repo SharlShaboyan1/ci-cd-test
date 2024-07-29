@@ -45,8 +45,11 @@ jobs:
         kubectl version --client
 
     - name: List files in the repository
-      run: ls -R .
+      run: cd ./infrastructure
 
+    - name: Infrastructure files
+      run: | ls
+      
     - name: Apply Kubernetes Manifests
       run: |
         kubectl apply -f ./infrastructure/k8s/deployment.yaml
