@@ -45,11 +45,8 @@ jobs:
         kubectl version --client
 
     - name: List files in the repository
-      run: cd ./infrastructure
+      run: ls ./infrastructure
 
-    - name: Infrastructure files
-      run: | ls
-      
     - name: Apply Kubernetes Manifests
       run: |
         kubectl apply -f ./infrastructure/k8s/deployment.yaml
@@ -58,4 +55,4 @@ jobs:
     - name: Deploy to K3s
       run: |
         kubectl set image deployment/my-react-app my-react-app=${{ secrets.DOCKER_USERNAME }}/my-app:latest
-        kubectl rollout status deployment/my-app
+        kubectl rollout status deployment/my-react-app
