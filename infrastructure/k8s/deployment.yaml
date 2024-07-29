@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: vite-react-app
-        image: sharl1/your-app:latest
+        image: sharl1/my-app:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 80
